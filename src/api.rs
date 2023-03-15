@@ -22,7 +22,7 @@ impl Api {
 
     pub async fn send_chat(&self, message: String) -> Result<String, Box<dyn std::error::Error>> {
         let chat_message: ChatRequest = ChatRequest {
-            model: "gpt-3.5-turbo".to_string(),
+            model: request::Model::GTP35,
             messages: vec![MessageRequest {
                 role: "user".to_string(),
                 content: message,
