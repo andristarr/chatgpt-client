@@ -1,6 +1,7 @@
-mod request;
+pub mod request;
 
 use request::ChatRequest;
+use request::ChatResponse;
 use request::MessageRequest;
 
 use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
@@ -20,24 +21,34 @@ impl Api {
         }
     }
 
-    pub async fn send_chat(&self, message: String) -> Result<String, Box<dyn std::error::Error>> {
+    pub async fn send_chat(
+        &self,
+        model: request::Model,
+        message: String,
+    ) -> Result<ChatResponse, Box<dyn std::error::Error>> {
         let chat_message: ChatRequest = ChatRequest {
-            model: request::Model::GTP35,
+            model: model,
             messages: vec![MessageRequest {
                 role: "user".to_string(),
                 content: message,
             }],
         };
 
-        Ok(self
+        let response = self
             .client
             .post(API_URL)
-            .body(serde_json::to_string(&chat_message).unwrap())
+            .body(serde_json::to_string(&chat_message)?)
             .header(AUTHORIZATION, format!("Bearer {}", self.api_key))
             .header(CONTENT_TYPE, "application/json")
             .send()
-            .await?
-            .text()
-            .await?)
+            .await;
+
+        let res = response?.text().await;
+
+        let qwe = res?;
+
+        let ret: ChatResponse = serde_json::from_str(&qwe)?;
+
+        Ok(ret)
     }
 }

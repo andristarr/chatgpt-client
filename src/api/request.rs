@@ -14,20 +14,25 @@ pub struct MessageRequest {
 
 #[derive(Deserialize, Debug)]
 pub struct ChatResponse {
-    id: String,
-    choices: Vec<ChatMessage>,
+    pub id: String,
+    pub choices: Vec<ChatChoice>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ChatChoice {
+    pub message: ChatMessage,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct ChatMessage {
-    content: String,
+    pub content: String,
 }
 
 #[derive(Serialize, Default, Debug)]
 pub enum Model {
     #[default]
     #[serde(rename = "gpt-3.5-turbo")]
-    GTP35,
+    GPT35,
     #[serde(rename = "gpt-4")]
-    GTP4,
+    GPT4,
 }
