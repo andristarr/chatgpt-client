@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT"
 description = "A simple wrapper for prompting OpenAI's ChatGPT"
 repository = "https://github.com/andristarr/chatgpt-client"
+exclude = [".cargo_vcs_info.json"]
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
